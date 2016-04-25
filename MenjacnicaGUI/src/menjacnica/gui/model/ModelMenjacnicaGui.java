@@ -15,7 +15,6 @@ public class ModelMenjacnicaGui extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -29,4 +28,11 @@ public class ModelMenjacnicaGui extends AbstractTableModel {
 	public String getColumnName(int arg0) {
 		return kolone[arg0];
 	}
+	
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return false;
+	}
+	
+	
 }
