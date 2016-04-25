@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
@@ -28,6 +29,8 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -69,13 +72,29 @@ public class MenjacnicaGUI extends JFrame {
 			}
 		});
 	}
+	
+	public static void ugasiAplikaciju() {
+		int opcija = JOptionPane.showConfirmDialog(null,"Da li zelite da zatvorite aplikaciju?", "Izlazak", 
+				JOptionPane.YES_NO_OPTION);
+
+		if (opcija == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public MenjacnicaGUI() {
 		setTitle("Menjacnica");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ugasiAplikaciju();
+			}
+
+		});
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 570, 385);
 		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
@@ -148,7 +167,10 @@ public class MenjacnicaGUI extends JFrame {
 			mntmOpen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					JFileChooser jfc = new JFileChooser();
-					jfc.showOpenDialog(null);
+					int returnVal = jfc.showOpenDialog(null);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						textArea.append("Ucitan fajl: " + jfc.getSelectedFile() + "\n");						
+					}
 				}
 			});
 			mntmOpen.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/directory.gif")));
@@ -159,6 +181,15 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem getMntmSave() {
 		if (mntmSave == null) {
 			mntmSave = new JMenuItem("Save");
+			mntmSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					JFileChooser jfc = new JFileChooser();
+					int returnVal = jfc.showSaveDialog(null);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						textArea.append("Sacuvan fajl: " + jfc.getSelectedFile() + "\n");
+					}
+				}
+			});
 			mntmSave.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 			mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		}
@@ -167,6 +198,11 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem getMntmExit() {
 		if (mntmExit == null) {
 			mntmExit = new JMenuItem("Exit");
+			mntmExit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ugasiAplikaciju();
+				}
+			});
 			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.ALT_MASK));
 		}
 		return mntmExit;
@@ -174,6 +210,11 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem getMntmAbout() {
 		if (mntmAbout == null) {
 			mntmAbout = new JMenuItem("About");
+			mntmAbout.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(null, "Jelena Marjanovic\n2016");
+				}
+			});
 		}
 		return mntmAbout;
 	}
