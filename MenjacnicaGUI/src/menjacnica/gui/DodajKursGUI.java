@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import menjacnica.Kurs;
+import menjacnica.gui.model.ModelMenjacnicaGui;
+
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -163,8 +167,10 @@ public class DodajKursGUI extends JFrame {
 			btnDodaj.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MenjacnicaGUI.vratiTextArea().append(vratiKurs());
-					int red = MenjacnicaGUI.vratiTabelu().getRowCount();
-					MenjacnicaGUI.vratiTabelu().setValueAt(nazivTextField.getText().trim(), red, 0);
+					Kurs k = new Kurs(Integer.parseInt(sifraTextField.getText()), nazivTextField.getText(), skraceniNazivTextField.getText(),
+							Double.parseDouble(prodajniTextField.getText()), Double.parseDouble(kupovniTextField.getText())
+							, Double.parseDouble(srednjiTextField.getText()));
+					GUIKontroler.dodajKurs(k);
 					
 				}
 			});

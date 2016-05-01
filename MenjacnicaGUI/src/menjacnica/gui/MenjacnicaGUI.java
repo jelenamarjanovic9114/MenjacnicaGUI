@@ -32,8 +32,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
 
 public class MenjacnicaGUI extends JFrame {
 
@@ -58,15 +60,6 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem mntmObrisiKurs;
 	private JMenuItem mntmIzvsiIzmenu;
 
-	
-	public static void ugasiAplikaciju() {
-		int opcija = JOptionPane.showConfirmDialog(null,"Da li zelite da zatvorite aplikaciju?", "Izlazak", 
-				JOptionPane.YES_NO_OPTION);
-
-		if (opcija == JOptionPane.YES_OPTION) {
-			System.exit(0);
-		}
-	}
 
 	/**
 	 * Create the frame.
@@ -76,7 +69,7 @@ public class MenjacnicaGUI extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				ugasiAplikaciju();
+				GUIKontroler.ugasiAplikaciju();
 			}
 
 		});
@@ -191,7 +184,7 @@ public class MenjacnicaGUI extends JFrame {
 			mntmExit = new JMenuItem("Exit");
 			mntmExit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ugasiAplikaciju();
+					GUIKontroler.ugasiAplikaciju();
 				}
 			});
 			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.ALT_MASK));
@@ -222,7 +215,7 @@ public class MenjacnicaGUI extends JFrame {
 			table = new JTable();
 			table.setFillsViewportHeight(true);
 			addPopup(table, getPopupMenu());
-			table.setModel(new ModelMenjacnicaGui());
+			table.setModel(new ModelMenjacnicaGui(GUIKontroler.vratiListuKurseva()));
 		}
 		return table;
 	}
@@ -231,7 +224,7 @@ public class MenjacnicaGUI extends JFrame {
 			scrollPane_1 = new JScrollPane();
 			scrollPane_1.setAutoscrolls(true);
 			scrollPane_1.setName("");
-			scrollPane_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+			scrollPane_1.setBorder(new TitledBorder(null, "STATUS", TitledBorder.LEFT, TitledBorder.TOP, null, null));
 			scrollPane_1.setPreferredSize(new Dimension(2, 50));
 			scrollPane_1.setViewportView(getTextArea());
 		}
@@ -301,5 +294,10 @@ public class MenjacnicaGUI extends JFrame {
 	
 	public static JTextArea vratiTextArea(){
 		return textArea;
+	}
+	
+	public void osveziTabelu() {
+		ModelMenjacnicaGui model = (ModelMenjacnicaGui) table.getModel();
+		model.staviSveKurseveUModel(GUIKontroler.vratiListuKurseva());
 	}
 }

@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 public class Kurs {
-	private GregorianCalendar datumKursa;
 	private int sifra;
 	private String naziv;
 	private String skraceniNaziv;
@@ -12,10 +11,9 @@ public class Kurs {
 	private double kupovniKurs;
 	private double srednjiKurs;	
 	
-	public Kurs(GregorianCalendar datumKursa, int sifra, String naziv, String skraceniNaziv, double prodajniKurs,
+	public Kurs(int sifra, String naziv, String skraceniNaziv, double prodajniKurs,
 			double kupovniKurs, double srednjiKurs) {
 		super();
-		this.datumKursa = datumKursa;
 		this.sifra = sifra;
 		this.naziv = naziv;
 		this.skraceniNaziv = skraceniNaziv;
@@ -27,18 +25,6 @@ public class Kurs {
 	public Kurs(){		
 	}
 	
-	public GregorianCalendar getDatumKursa() {
-		return datumKursa;
-	}
-	public void setDatumKursa(GregorianCalendar datumKursa) {
-		if(datumKursa == null){
-			throw new RuntimeException("Datum kursa ne sme biti null!");
-		}
-		if(datumKursa.before(new GregorianCalendar())){
-			throw new RuntimeException("Datum kursa ne sme biti pre danasnjeg!");
-		}
-		this.datumKursa = datumKursa;
-	}
 	public double getProdajniKurs() {
 		return prodajniKurs;
 	}
@@ -93,23 +79,10 @@ public class Kurs {
 
 	@Override
 	public String toString() {
-		return "Datum kursa: " + new SimpleDateFormat("dd. MMM yyyy.").format(datumKursa) + "\nProdajni kurs: " + prodajniKurs
+		return  "\nProdajni kurs: " + prodajniKurs
 				+ ("\nKupovni kurs: ") + kupovniKurs + "\nSrednji kurs: " + srednjiKurs;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((datumKursa == null) ? 0 : datumKursa.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(kupovniKurs);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(prodajniKurs);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(srednjiKurs);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -120,11 +93,7 @@ public class Kurs {
 		if (getClass() != obj.getClass())
 			return false;
 		Kurs other = (Kurs) obj;
-		if (datumKursa == null) {
-			if (other.datumKursa != null)
-				return false;
-		} else if (!datumKursa.equals(other.datumKursa))
-			return false;
+		
 		if (Double.doubleToLongBits(kupovniKurs) != Double.doubleToLongBits(other.kupovniKurs))
 			return false;
 		if (Double.doubleToLongBits(prodajniKurs) != Double.doubleToLongBits(other.prodajniKurs))
