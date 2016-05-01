@@ -53,29 +53,6 @@ public class ModelMenjacnicaGui extends AbstractTableModel {
 		return false;
 	}
 	
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if(kursevi.get(rowIndex) == null){
-			kursevi.add(rowIndex, new Kurs());
-		}
-		Kurs k = kursevi.get(rowIndex);
-		switch (columnIndex) {
-		case 0: k.setSifra((int) aValue);
-			break;
-		case 1: k.setSkraceniNaziv((String) aValue); 
-			break;
-		case 2:	k.setProdajniKurs((double) aValue);
-			break;
-		case 3: k.setKupovniKurs((double) aValue);
-			break;
-		case 4: k.setNaziv((String) aValue);
-			break;
-
-		default:
-			break;
-		}
-	}
-
 	public void staviSveKurseveUModel(LinkedList<Kurs> kursevi) {
 		this.kursevi=kursevi;
 		fireTableDataChanged();		

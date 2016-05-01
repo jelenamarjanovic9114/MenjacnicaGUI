@@ -21,4 +21,8 @@ public class Menjacnica {
 	public void dodajKurs(Kurs k){
 		kursevi.add(k);
 	}
+	
+	public void izbrisiKurs(Kurs k){
+		kursevi.remove(k);
+	}
 }

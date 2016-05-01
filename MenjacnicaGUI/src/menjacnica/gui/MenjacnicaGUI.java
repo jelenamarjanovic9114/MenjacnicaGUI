@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
+import menjacnica.Kurs;
 import menjacnica.gui.model.ModelMenjacnicaGui;
 
 import java.awt.Color;
@@ -134,6 +135,22 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton getBtnIzbrisiKurs() {
 		if (btnIzbrisiKurs == null) {
 			btnIzbrisiKurs = new JButton("Izbrisi kurs");
+			btnIzbrisiKurs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int indeks = table.getSelectedRow();
+					if(indeks == -1){
+						GUIKontroler.upozoriDaBiraRed();
+					}else{
+						int opcija = JOptionPane.showConfirmDialog(null, "Da li ste sigurnu da zelite da obrisete ovaj kurs?",
+								"Upozorenje", JOptionPane.YES_NO_OPTION);
+						if(opcija == JOptionPane.YES_OPTION){
+							ModelMenjacnicaGui model = (ModelMenjacnicaGui) table.getModel();
+							Kurs k = model.vratiKurs(indeks);
+							GUIKontroler.obrisiKurs(k);;
+						}
+					}
+				}
+			});
 			btnIzbrisiKurs.setPreferredSize(new Dimension(110, 30));
 		}
 		return btnIzbrisiKurs;
