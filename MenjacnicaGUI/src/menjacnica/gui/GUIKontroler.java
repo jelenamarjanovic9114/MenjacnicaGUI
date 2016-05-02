@@ -52,6 +52,12 @@ public class GUIKontroler {
 		prozor.setLocationRelativeTo(null);
 	}
 	
+	public static void pokreniIzvrsiIzmenuProzor(){
+		IzvrsiZamenuGUI prozor = new IzvrsiZamenuGUI();
+		prozor.setVisible(true);
+		prozor.setLocationRelativeTo(null);
+	}
+	
 	public static void upozoriDaBiraRed() {
 		JOptionPane.showMessageDialog(prozor.getContentPane(), "Izaberite kurs za brisanje iz tabele!",
 				"Greska", JOptionPane.ERROR_MESSAGE);
@@ -61,6 +67,10 @@ public class GUIKontroler {
 	public static void obrisiKurs(Kurs k){
 		menjacnica.izbrisiKurs(k);
 		prozor.osveziTabelu();
+	}
+	
+	public static void dodajUtextArea(String s){
+		prozor.dodajUTextArea(s);
 	}
 	
 }

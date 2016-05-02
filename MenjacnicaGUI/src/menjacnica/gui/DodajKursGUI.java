@@ -166,12 +166,12 @@ public class DodajKursGUI extends JFrame {
 			btnDodaj = new JButton("Dodaj");
 			btnDodaj.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					MenjacnicaGUI.vratiTextArea().append(vratiKurs());
 					Kurs k = new Kurs(Integer.parseInt(sifraTextField.getText()), nazivTextField.getText(), skraceniNazivTextField.getText(),
 							Double.parseDouble(prodajniTextField.getText()), Double.parseDouble(kupovniTextField.getText())
 							, Double.parseDouble(srednjiTextField.getText()));
 					GUIKontroler.dodajKurs(k);
-					
+					GUIKontroler.dodajUtextArea(vratiKurs());					
+					ocistiPolja();
 				}
 			});
 		}
@@ -191,23 +191,28 @@ public class DodajKursGUI extends JFrame {
 	
 	private String vratiKurs(){
 		String kurs;
+		try{
 		String naziv = nazivTextField.getText().trim();
 		String sifra = sifraTextField.getText().trim();
 		String prodajniKurs = prodajniTextField.getText().trim();
 		String kupovni = kupovniTextField.getText().trim();
 		String srednji = srednjiTextField.getText().trim();
 		String skraceniNaziv = skraceniNazivTextField.getText().trim();
-		if(naziv != null && sifra !=null && prodajniKurs != null && kupovni != null
-				&& srednji != null && skraceniNaziv != null && 
-				!naziv.isEmpty() && !sifra.isEmpty() && !prodajniKurs.isEmpty() && !kupovni.isEmpty()
-				&& !srednji.isEmpty() && !skraceniNaziv.isEmpty()){
-			kurs = sifra + "; " + naziv + "; \nProdajni kurs: " + prodajniKurs + "; \nKupovni kurs: " + kupovni + 
-					";\nSrednji kurs: " + srednji + ";\nSkraceni naziv: " + skraceniNaziv;
-			
-			return kurs;
-		} else{
+		kurs = sifra + ": " + naziv + " (" + skraceniNaziv + ")\nProdajni: " + prodajniKurs + 
+				"\nKupovni: " + kupovni  + "\nSrednji: " + srednji;
+		} catch (Exception e){
 			JOptionPane.showMessageDialog(null, "Text field ne sme biti null!", "Greska", JOptionPane.ERROR_MESSAGE);
 			throw new RuntimeException("Text field je null!");
 		}
+		return kurs;
+	}
+	
+	private void ocistiPolja(){
+		kupovniTextField.setText("");
+		nazivTextField.setText("");
+		prodajniTextField.setText("");
+		srednjiTextField.setText("");
+		skraceniNazivTextField.setText("");
+		sifraTextField.setText("");
 	}
 }

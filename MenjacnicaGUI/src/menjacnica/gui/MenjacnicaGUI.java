@@ -128,7 +128,7 @@ public class MenjacnicaGUI extends JFrame {
 					GUIKontroler.pokreniDodajKursGUIProzor();
 				}
 			});
-			btnDodajKurs.setPreferredSize(new Dimension(110, 30));
+			btnDodajKurs.setPreferredSize(new Dimension(120, 30));
 		}
 		return btnDodajKurs;
 	}
@@ -146,19 +146,27 @@ public class MenjacnicaGUI extends JFrame {
 						if(opcija == JOptionPane.YES_OPTION){
 							ModelMenjacnicaGui model = (ModelMenjacnicaGui) table.getModel();
 							Kurs k = model.vratiKurs(indeks);
-							GUIKontroler.obrisiKurs(k);;
+							GUIKontroler.obrisiKurs(k);
+							dodajUTextArea("Obrisan je red sa indeksom " + indeks);
+							JOptionPane.showMessageDialog(null, "Kurs uspesno obrisan!", 
+									"Obavestenje", JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
 				}
 			});
-			btnIzbrisiKurs.setPreferredSize(new Dimension(110, 30));
+			btnIzbrisiKurs.setPreferredSize(new Dimension(120, 30));
 		}
 		return btnIzbrisiKurs;
 	}
 	private JButton getBtnIzvrsiZamenu() {
 		if (btnIzvrsiZamenu == null) {
 			btnIzvrsiZamenu = new JButton("Izvrsi zamenu");
-			btnIzvrsiZamenu.setPreferredSize(new Dimension(110, 30));
+			btnIzvrsiZamenu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					GUIKontroler.pokreniIzvrsiIzmenuProzor();
+				}
+			});
+			btnIzvrsiZamenu.setPreferredSize(new Dimension(120, 30));
 		}
 		return btnIzvrsiZamenu;
 	}
@@ -239,7 +247,6 @@ public class MenjacnicaGUI extends JFrame {
 	private JScrollPane getScrollPane_1() {
 		if (scrollPane_1 == null) {
 			scrollPane_1 = new JScrollPane();
-			scrollPane_1.setAutoscrolls(true);
 			scrollPane_1.setName("");
 			scrollPane_1.setBorder(new TitledBorder(null, "STATUS", TitledBorder.LEFT, TitledBorder.TOP, null, null));
 			scrollPane_1.setPreferredSize(new Dimension(2, 50));
@@ -250,7 +257,9 @@ public class MenjacnicaGUI extends JFrame {
 	private JTextArea getTextArea() {
 		if (textArea == null) {
 			textArea = new JTextArea();
-			textArea.setPreferredSize(new Dimension(4, 35));
+			textArea.setEditable(false);
+			textArea.setWrapStyleWord(true);
+			textArea.setPreferredSize(new Dimension(4, 30));
 			textArea.setBorder(null);
 		}
 		return textArea;
@@ -295,22 +304,42 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem getMntmObrisiKurs() {
 		if (mntmObrisiKurs == null) {
 			mntmObrisiKurs = new JMenuItem("Obrisi kurs");
+			mntmObrisiKurs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int indeks = table.getSelectedRow();
+					if(indeks == -1){
+						GUIKontroler.upozoriDaBiraRed();
+					}else{
+						int opcija = JOptionPane.showConfirmDialog(null, "Da li ste sigurnu da zelite da obrisete ovaj kurs?",
+								"Upozorenje", JOptionPane.YES_NO_OPTION);
+						if(opcija == JOptionPane.YES_OPTION){
+							ModelMenjacnicaGui model = (ModelMenjacnicaGui) table.getModel();
+							Kurs k = model.vratiKurs(indeks);
+							GUIKontroler.obrisiKurs(k);
+							textArea.append("Obrisan je red sa indeksom " + indeks);
+							JOptionPane.showMessageDialog(null, "Kurs uspesno obrisan!", 
+									"Obavestenje", JOptionPane.INFORMATION_MESSAGE);
+						}
+				}
+			}});
+			
 		}
 		return mntmObrisiKurs;
 	}
 	private JMenuItem getMntmIzvsiIzmenu() {
 		if (mntmIzvsiIzmenu == null) {
 			mntmIzvsiIzmenu = new JMenuItem("Izvsi izmenu");
+			mntmIzvsiIzmenu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GUIKontroler.pokreniIzvrsiIzmenuProzor();
+				}
+			});
 		}
 		return mntmIzvsiIzmenu;
 	}
-	
-	public static JTable vratiTabelu(){
-		return table;
-	}
-	
-	public static JTextArea vratiTextArea(){
-		return textArea;
+
+	public void dodajUTextArea(String s){
+		textArea.append(s);
 	}
 	
 	public void osveziTabelu() {
